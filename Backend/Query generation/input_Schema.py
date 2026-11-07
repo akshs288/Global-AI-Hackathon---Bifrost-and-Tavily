@@ -13,3 +13,4 @@ class Model1(BaseModel):
     expected_duration_minutes:Optional[int] = Field(default=None)   # This should be integer of minutes how many minutes
     
     location:Optional[str] = None
+
