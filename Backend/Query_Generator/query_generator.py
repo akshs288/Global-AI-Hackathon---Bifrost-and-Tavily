@@ -26,7 +26,31 @@ def generate_query(meeting):
     4. Include relevant recent developments.
     5. Make the query specific and comprehensive.
     6. Do not invent missing meeting details.
-    7. Return only the refined research query.
+    7. Return only the refined research query (And please return me query in json format like example - {
+    "company": "Microsoft",
+    "research_queries": [
+        {
+            "category": "Business Strategy",
+            "target": "CEO",
+            "query": "..."
+        },
+        {
+            "category": "Technical Architecture",
+            "target": "CTO",
+            "query": "..."
+        },
+        {
+            "category": "Product Integration",
+            "target": "Managers",
+            "query": "..."
+        }
+    ],
+    "source_preferences": [
+        "Official company announcements",
+        "Investor relations",
+        "Technical documentation"
+    ]
+}).
     """
 
     response = client.models.generate_content(
