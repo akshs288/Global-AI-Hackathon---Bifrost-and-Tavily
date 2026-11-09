@@ -20,11 +20,12 @@ try:
     print("Input successfully validated!")
 
     # Step 2: Generate refined query using Gemini
-    query = generate_query(meeting)
-    data_json = json.loads(query)         # Convert Json into Python Dictionary
+    
+    def main_query(meeting):
+        query = generate_query(meeting)
+        data_json = json.loads(query)         # Convert Json into Python Dictionary
 
-    print("\nGenerated Research Query:")
-    print(data_json)
+        return data_json
 
 except ValidationError as e:
     print("Please correct your input:")
