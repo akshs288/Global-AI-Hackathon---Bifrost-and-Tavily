@@ -1,9 +1,14 @@
 from pydantic import ValidationError
-from input_Schema import Model1
+from input_schema import Model1
 
 sample_data = {
-    "company_name": "",
-    "agenda": "Discuss AI developments"
+    "company_name": "Microsoft",
+    "agenda": "Discuss AI infrastructure and future partnerships",
+    "participants": ["CEO", "CTO", "VP of Engineering"],
+    "meeting_datetime": "2026-11-10T15:30:00",
+    "meeting_type": "partnership",
+    "expected_duration_minutes": 60,
+    "location": "New York"
 }
 
 try:
