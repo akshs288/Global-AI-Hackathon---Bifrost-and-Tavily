@@ -8,8 +8,7 @@ client = genai.Client(
     api_key=os.getenv("GEMINI_API_KEY")
 )
 
-def generate_query(meeting):
-
+def generate_query(meeting_details):
     prompt = f"""
     You are an expert meeting research assistant.
 
@@ -17,7 +16,7 @@ def generate_query(meeting):
     a detailed research query.
 
     Meeting Details:
-    {meeting.model_dump(exclude_none=True)}
+    {meeting_details.model_dump(exclude_none=True)}
 
     Instructions:
     1. Understand the company and meeting agenda.
@@ -53,4 +52,4 @@ def generate_query(meeting):
         contents=prompt
     )
 
-    return response.text
+    return response.text             
