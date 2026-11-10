@@ -52,4 +52,4 @@ def generate_query(meeting_details):
         contents=prompt
     )
 
-    return response.text             
+    return response.text
