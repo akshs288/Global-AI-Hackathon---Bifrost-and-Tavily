@@ -8,8 +8,6 @@ client = genai.Client(
     api_key=os.getenv("GEMINI_API_KEY")
 )
 
-query = "I have a meeting tomorrow with Satya Nadella, CEO of Microsoft, to discuss an AI partnership. Give me a briefing."
-
 
 def generate_json_data(query):
 
@@ -88,6 +86,4 @@ def generate_json_data(query):
     )
 
     return response.text
-
-print(generate_json_data(query))
 
