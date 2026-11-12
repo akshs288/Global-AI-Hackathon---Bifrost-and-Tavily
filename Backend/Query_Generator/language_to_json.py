@@ -24,7 +24,7 @@ def generate_json_data(query):
         "company_name": "string",
         "agenda": "string",
         "participants": ["string"],
-        "meeting_datetime": "datetime in ISO 8601 format or null",
+        "meeting_date": "date in YYYY-MM-DD format or null",
         "meeting_type": "string or null",
         "expected_duration_minutes": "integer or null",
         "location": "string or null"
@@ -48,13 +48,10 @@ def generate_json_data(query):
        - Do not assume that a company's CEO is attending just because
          the user mentions the company.
 
-    4. meeting_datetime:
-       - Extract the meeting date and time if explicitly provided.
-       - Return datetime in ISO 8601 format.
-       - If the user provides only a date, do not invent a time.
-       - If the date or time is ambiguous, return null.
-       - Never assume the meeting is tomorrow or today without using
-         the current date as context.
+    4. meeting_date:
+      - Extract the meeting date if explicitly provided.
+      - Return it in YYYY-MM-DD format.
+      - If no date is specified or it is ambiguous, return null.
 
     5. meeting_type:
        - Identify the meeting type if it can reasonably be determined
@@ -80,7 +77,7 @@ def generate_json_data(query):
     """
 
     response = client.models.generate_content(
-        model="gemini-3.8-flash",
+        model="gemini-3.6-flash",
         contents=prompt
     )
 
