@@ -1,0 +1,24 @@
+from tavily import TavilyClient
+import os
+from dotenv import load_dotenv
+from google import genai
+
+
+load_dotenv()
+
+api_key = os.getenv("TAVILY_API_KEY")
+
+tavily_client = TavilyClient(api_key=api_key)
+
+sample_query = {'company': 'Microsoft', 'research_queries': [{'category': 'Technical Strategy & Infrastructure', 'target': 'CTO of Microsoft', 'query': "Investigate Microsoft's current AI architecture roadmap, foundation model developments, enterprise Azure AI infrastructure scaling, custom silicon initiatives (e.g., Maia, Cobalt), and technical priorities for maintaining leadership in AI innovation."}, {'category': 'Product Strategy & Ecosystem Integration', 'target': 'Product Manager', 'query': "Analyze Microsoft's strategic AI product integration across core offerings (e.g., Copilot ecosystem, Microsoft 365, Windows), monetization strategies, user adoption metrics, feature pipelines, and market positioning against key AI competitors."}], 'source_preferences': ['Official company announcements and Microsoft Tech Community blogs', 'Investor relations, earnings call transcripts, and annual reports', 'Microsoft Developer Keynotes (Build, Ignite) and technical documentation', 'Reputable tech industry analyst reports and market research']}
+
+queries = sample_query["research_queries"]
+
+for i in queries:
+    new_query = i["query"]        # Query is stored
+    response = tavily_client.search(new_query,time_range="month")
+    print(response)
+
+    print("\n\n\n\n")
+
+
