@@ -1,7 +1,7 @@
 import { STEPS } from '../constants';
 import type { Brief, BriefInput } from '../types';
 
-const API_URL: string = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
+const API_URL: string = 'http://localhost:8000';
 
 export async function generateBrief(input: BriefInput, onStep?: (i: number) => void): Promise<Brief> {
   let step = 0;
