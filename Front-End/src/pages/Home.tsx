@@ -52,6 +52,10 @@ export default function Home() {
       addBrief(brief);
       setCurrent(brief);
       toast("Brief generated and saved");
+    } catch (err) {
+      toast(
+        err instanceof Error ? err.message : "Could not generate the brief",
+      );
     } finally {
       setLoading(false);
     }

@@ -51,7 +51,7 @@ export default function Settings() {
             <span className="avatar lg">RS</span>
             <div>
               <b>Rahul Sharma</b>
-              <p className="muted">thanosharma1234@gmail.com · Admin account</p>
+              <p className="muted">thanosharma1234@gmail.com · Demo account</p>
             </div>
           </div>
         </div>
@@ -111,9 +111,8 @@ export default function Settings() {
             About
           </h3>
           <p className="muted">
-            BriefAI v1.0 · Frontend demo. Briefs are generated from sample data
-            in your browser and are not verified research. Nothing leaves your
-            device.
+            BriefAI · Frontend demo. Briefs are generated from sample data
+            in your browser and are not verified research.
           </p>
         </div>
       </div>
