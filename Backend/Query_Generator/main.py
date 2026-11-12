@@ -2,10 +2,14 @@ from pydantic import ValidationError
 from Data_Validation.input_schema import Model1
 from Query_Generator.query_generator import generate_query
 import json
-from Query_Generator.langugae_to_json import generate_json_data
+from Query_Generator.language_to_json import generate_json_data
 
-query = "I have a meeting tomorrow with Satya Nadella, CEO of Microsoft, to discuss an AI partnership. Give me a briefing."
+main_query = ""
+with open("D:\All Coding files\Global-AI-Hackathon---Bifrost-and-\Backend\Query_Generator\first_input_json.json") as f:
+    data = json.dumps(f)
+    main_query = f"Company name = {data[0]["Company"]}, Meeting Date = {data[0]['Date']}, Query = {data[0]['Query']}"
 
+query = main_query
 sample_data = generate_json_data(query)
 
 try:
