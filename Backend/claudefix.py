@@ -125,7 +125,7 @@ def synthesize_brief(plan: dict, research: str, req: BriefRequest) -> dict:
         "news items with a date (or 'Date unknown'), and tailor talkingPoints and questions to the user goal."
     )
     resp = client.models.generate_content(
-        model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+        model=os.getenv("GEMINI_MODEL", "gemini-3.6-flash"),
         contents=prompt,
         config=types.GenerateContentConfig(
             response_mime_type="application/json",
@@ -193,6 +193,8 @@ def generate(req: BriefRequest) -> BriefResponse:
     now = datetime.now(timezone.utc)
     return BriefResponse(
         id=f"b{int(now.timestamp() * 1000)}",
-        company=req.company.strip(), date=req.date, query=req.query.strip(),
-        generatedAt=now.isoformat(), **content.model_dump(),
+        company=req.company.strip(),
+        date=req.date, query=req.query.strip(),
+        generatedAt=now.isoformat(),
+        **content.model_dump(),
     )
