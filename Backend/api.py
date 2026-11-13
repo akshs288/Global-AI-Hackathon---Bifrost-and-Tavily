@@ -16,12 +16,47 @@ app.add_middleware(
 )
 
 # Defined Parameters
+class Overview(BaseModel):
+    description: str
+    industry: str
+    hq: str
+    products: str
+    model: str
+
+class NewsItem(BaseModel):
+    date: str
+    title: str
+    summary: str
+
+class Executive(BaseModel):
+    name: str
+    role: str
+    description: str
+
+class Competitor(BaseModel):
+    name: str
+    positioning: str
+    advantage: str
+
+class BriefContent(BaseModel):
+    overview: Overview
+    news: list[NewsItem]
+    executives: list[Executive]
+    talkingPoints: list[str]
+    competitors: list[Competitor]
+    competitorNote: str
+    questions: list[str]
+    risks: list[str]
+    opportunities: list[str]
+    investigate: list[str]
+    trends: list[str]
+
 class BriefInput(BaseModel):
     company: str = Field(min_length=1)
     date: str
     query: str = Field(min_length=1)
 
-class BriefResponse(BaseModel):
+class BriefResponse(BriefContent):
     id: str
     company: str
     date: str
@@ -40,7 +75,29 @@ def Brief(req:BriefInput):
     company = req.company
     date = req.date
     query = req.query 
-       
-    print (Query(company,date,query))
+    # result = Query(company,date,query)
 
-    return 
+    return {
+        "id": "brief_001",
+        "company": "Tesla",
+        "date": "2026-11-20",
+        "query": "Prepare for a partnership discussion.",
+        "generatedAt": "2026-11-14T10:00:00Z",
+        "overview": {
+            "description": "Electric vehicle and clean energy company.",
+            "industry": "Automotive",
+            "hq": "Austin, Texas",
+            "products": "Electric vehicles and batteries",
+            "model": "Direct-to-consumer"
+        },
+        "news": [],
+        "executives": [],
+        "talkingPoints": [],
+        "competitors": [],
+        "competitorNote": "",
+        "questions": [],
+        "risks": [],
+        "opportunities": [],
+        "investigate": [],
+        "trends": []
+        }
