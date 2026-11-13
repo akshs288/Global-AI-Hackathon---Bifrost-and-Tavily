@@ -15,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Defined Parameters
+# Defined Parameters            JUST MAKE SURE KARNA KI JOH OUTPUT HOGA VOH ISS SCHEMA PE HI BASED HO, KUCH MODIFY HONA H TOH BATA DENA
 class Overview(BaseModel):
     description: str
     industry: str
@@ -75,14 +75,15 @@ def Brief(req:BriefInput):
     company = req.company
     date = req.date
     query = req.query 
-    # result = Query(company,date,query)
+    # result = Query(company,date,query)            Working in CLI
+    # print(result)
 
     return {
         "id": "brief_001",
-        "company": "Tesla",
-        "date": "2026-11-20",
-        "query": "Prepare for a partnership discussion.",
-        "generatedAt": "2026-11-14T10:00:00Z",
+        "company": company,
+        "date": date,
+        "query": query,
+        "generatedAt": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "overview": {
             "description": "Electric vehicle and clean energy company.",
             "industry": "Automotive",
