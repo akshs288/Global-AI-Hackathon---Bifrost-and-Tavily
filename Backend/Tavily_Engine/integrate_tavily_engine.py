@@ -18,8 +18,8 @@ def receive_researched_data(whole_query):
     for i in queries:
         new_query = i["query"]        # Query is stored
         response = tavily_client.search(new_query)
-        main_l.append(response)
-        print(response)
+        main_l.append(response['results'])
+        print(response['results'])
         print("\n\n\n")
         
 receive_researched_data(sample_query)
