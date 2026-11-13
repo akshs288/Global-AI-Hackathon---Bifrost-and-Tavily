@@ -9,10 +9,9 @@ from Tavily_Engine.integrate_tavily_engine import receive_researched_data
 
 def Query(company, date, quer):
     final_query = f"Company name = {company}, Meeting Date = {date}, Query = {quer}"
-    query = final_query
-
+    
     try:
-        sample_data = generate_json_data(query)    # This function is to generate the query for pydantic model. 
+        sample_data = generate_json_data(final_query)    # This function is to generate the query for pydantic model. 
         # Step 1: Validate user input
         sample_data = json.loads(sample_data)
         meeting = Model1(**sample_data)

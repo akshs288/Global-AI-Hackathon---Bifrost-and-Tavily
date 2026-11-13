@@ -74,9 +74,13 @@ def Home():
 def Brief(req:BriefInput):
     company = req.company
     date = req.date
-    query = req.query 
-    # result = Query(company,date,query)            Working in CLI
-    # print(result)
+    query = req.query
+    try:
+        result = Query(company,date,query)            # Working in CLI
+        print(result)
+
+    except Exception as e:
+        print(e)
 
     return {
         "id": "brief_001",
