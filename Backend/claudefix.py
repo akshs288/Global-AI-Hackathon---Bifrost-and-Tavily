@@ -194,7 +194,8 @@ def generate(req: BriefRequest) -> BriefResponse:
     return BriefResponse(
         id=f"b{int(now.timestamp() * 1000)}",
         company=req.company.strip(),
-        date=req.date, query=req.query.strip(),
+        date=req.date,
+        query=req.query.strip(),
         generatedAt=now.isoformat(),
         **content.model_dump(),
     )

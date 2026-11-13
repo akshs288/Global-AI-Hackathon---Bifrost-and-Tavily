@@ -1,7 +1,8 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, ValidationError
-
+from datetime import datetime, timezone
+from Query_Generator.main import Query
 # from PipeLine import run_pipeline
 
 
@@ -9,9 +10,9 @@ from pydantic import BaseModel, Field, ValidationError
 app = FastAPI(title="BriefAI API")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173","http://localhost:5174"],
     allow_methods=["*"],
-    allow_headers=["*"]
+    allow_headers=["*"],
 )
 
 # Defined Parameters
@@ -30,13 +31,16 @@ class BriefResponse(BaseModel):
 
 
 # Testing If API is running or Not
-@app.get("/")
+@app.get("/home")
 def Home():
     return {"status": "API is Running"}
 
+@app.post("/API/Brief/Generate", response_model=BriefResponse)
+def Brief(req:BriefInput):
+    company = req.company
+    date = req.date
+    query = req.query 
+       
+    print (Query(company,date,query))
 
-# @app.post('GenerateBrief')
-# def generate_brief(request: BriefRequest):
-
-
-@app.post("/api/briefs/generate", response_model=BriefResponse)
+    return 
