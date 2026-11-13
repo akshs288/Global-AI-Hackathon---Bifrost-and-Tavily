@@ -17,6 +17,9 @@ def receive_researched_data(whole_query):
     main_l = []
     for i in queries:
         new_query = i["query"]        # Query is stored
-        response = tavily_client.search(new_query,time_range="month")
-        main_l.append(response)
-    return main_l
+        response = tavily_client.search(new_query)
+        main_l.append(response['results'])
+        print(response['results'])
+        print("\n\n\n")
+        
+receive_researched_data(sample_query)
