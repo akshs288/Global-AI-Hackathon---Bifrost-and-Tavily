@@ -22,6 +22,4 @@ def receive_researched_data(whole_query):
         print(response)
         print("\n\n\n")
         
-    return main_l
-
-# receive_researched_data(sample_query)
+receive_researched_data(sample_query)
