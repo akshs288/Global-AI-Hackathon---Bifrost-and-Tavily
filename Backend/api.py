@@ -78,16 +78,12 @@ def Brief(req: BriefInput):
     date = req.date
     query = req.query
     
-    
-
     try:
         result = Query(company, date, query)
-        print(result)
 
-				#Basic Expceptional Handeling, Might improve later
+	#Basic Expceptional Handeling, Might improve later
     except Exception as e:
         raise HTTPException(
             status_code=500,
             detail=f"Could not generate brief: {str(e)}"
         )
-    

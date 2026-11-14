@@ -16,6 +16,11 @@ def generate_brief(
     Generates only the BriefContent part.
     `response_schema` will be the BriefContent class from api.py.
     """
+    cleaned_results = sorted(
+        cleaned_results,
+        key=lambda item: item.get("score") or 0,
+        reverse=True
+    )[:8]
 
     client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 

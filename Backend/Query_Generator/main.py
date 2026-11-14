@@ -7,6 +7,7 @@ from Tavily_Engine.integrate_tavily_engine import receive_researched_data
 from Tavily_Engine.integrate_tavily_engine import remove_duplicate_content
 
 
+
 def Query(comapany,date,quer):
     final_query = f"Company name = {comapany}, Meeting Date = {date}, Query = {quer}"
 
