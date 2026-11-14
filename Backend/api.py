@@ -2,7 +2,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, ValidationError
 from datetime import datetime, timezone
-from Query_Generator.main import Query
+from testing_engine import TavilyGenerator
+
 # from PipeLine import run_pipeline
 
 
@@ -73,13 +74,14 @@ def Home():
 #Main Request Model
 @app.post("/API/Brief/Generate", response_model=BriefResponse)
 def Brief(req: BriefInput):
-				#Defining Variables firstly
+#Defining Variables firstly
     company = req.company
     date = req.date
     query = req.query
     
     try:
-        result = Query(company, date, query)
+        result = TavilyGenerator(company,date,query)
+        return result
 
 	#Basic Expceptional Handeling, Might improve later
     except Exception as e:

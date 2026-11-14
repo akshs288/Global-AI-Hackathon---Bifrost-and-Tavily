@@ -8,7 +8,7 @@ export async function generateBrief(input: BriefInput, onStep?: (i: number) => v
   onStep?.(step);
   const timer = window.setInterval(() => { step = Math.min(step + 1, STEPS.length - 1); onStep?.(step); }, 1500);
   try {
-    const res = await fetch(`${API_URL}/api/briefs/generate`, {
+    const res = await fetch(`${API_URL}/API/Brief/Generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(input)
