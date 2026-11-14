@@ -6,7 +6,6 @@ from Query_Generator.language_to_json import generate_json_data
 from Tavily_Engine.integrate_tavily_engine import receive_researched_data
 
 
-final_query = ""
 with open("D:\\All Coding files\\Global-AI-Hackathon---Bifrost-and-\\Backend\\Query_Generator\\first_input_json.json") as f:
     data = json.load(f)
     final_query = f"Company name = {data[0]['Company']}, Meeting Date = {data[0]['Date']}, Query = {data[0]['Query']}"
