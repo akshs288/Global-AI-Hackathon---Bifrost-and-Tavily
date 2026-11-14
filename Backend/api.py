@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, ValidationError
 from datetime import datetime, timezone
 from Query_Generator.main import Query
-# from PipeLine import run_pipeline
+# from Query_Generator importing Query function to generate Query
 
 
 # Allowing React to input data
@@ -70,16 +70,22 @@ class BriefResponse(BriefContent):
 def Home():
     return {"status": "API is Running"}
 
+#Main Request Model
 @app.post("/API/Brief/Generate", response_model=BriefResponse)
 def Brief(req: BriefInput):
+				#Defining Variables firstly
     company = req.company
     date = req.date
     query = req.query
+    
+    
 
     try:
         result = Query(company, date, query)
         print(result)
+""
 
+				#Basic Expceptional Handeling, Might improve later
     except Exception as e:
         raise HTTPException(
             status_code=500,
