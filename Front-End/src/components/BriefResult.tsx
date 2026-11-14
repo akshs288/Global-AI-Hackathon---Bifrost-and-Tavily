@@ -99,12 +99,12 @@ export default function BriefResult({ brief }: { brief: Brief }) {
           <span>Export PDF</span>
         </button>
       </div>
-      <div className="demo">
+      {/* <div className="demo">
         <TriangleAlert />
         <span>
           Demo content generated from sample data. Not verified live research.
         </span>
-      </div>
+      </div> */}
       <div className="summary">
         <div>
           <span>Company:</span> {brief.company}
