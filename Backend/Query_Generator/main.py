@@ -19,7 +19,6 @@ try:
         data_json = json.loads(query)         # Convert Json into Python Dictionary
         return data_json
 
-
     data_for_pydantic = generate_json_data(query)    # This function is to generate the query for pydantic model. 
     # Step 2: Validate user input
     data_obj = json.loads(data_for_pydantic)
