@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, ValidationError
 from datetime import datetime, timezone
 from Query_Generator.main import Query
-from Tavily_Engine.brief_generate import generate_brief
 # from PipeLine import run_pipeline
 
 
@@ -71,32 +70,21 @@ class BriefResponse(BriefContent):
 def Home():
     return {"status": "API is Running"}
 
+#Main Request Model
 @app.post("/API/Brief/Generate", response_model=BriefResponse)
 def Brief(req: BriefInput):
+				#Defining Variables firstly
     company = req.company
     date = req.date
     query = req.query
+    
+    
 
     try:
-        cleaned_results = Query(company, date, query)
+        result = Query(company, date, query)
+        print(result)
 
-        brief_content = generate_brief(
-            company=company,
-            date=date,
-            query=query,
-            cleaned_results=cleaned_results,
-            response_schema=BriefContent,
-        )
-
-        return {
-            "id": f"brief_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-            "company": company,
-            "date": date,
-            "query": query,
-            "generatedAt": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            **brief_content
-        }
-
+				#Basic Expceptional Handeling, Might improve later
     except Exception as e:
         raise HTTPException(
             status_code=500,
