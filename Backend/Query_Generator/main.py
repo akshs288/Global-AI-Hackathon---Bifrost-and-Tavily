@@ -26,12 +26,11 @@ try:
     meeting = Model1(**data_obj)
     print("Input successfully validated!")
 
-
     gemini_query = main_query(meeting=meeting)
     tavily_researched_data = receive_researched_data(gemini_query)
     raw_data_meeting = remove_duplicate_content(tavily_researched_data)         # This will return list of Dictionary
 
-    meeting_brief = 
+    # meeting_brief = 
 
 
 except ValidationError as e:

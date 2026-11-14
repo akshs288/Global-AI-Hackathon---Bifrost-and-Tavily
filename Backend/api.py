@@ -5,7 +5,6 @@ from datetime import datetime, timezone
 from Query_Generator.main import Query
 # from PipeLine import run_pipeline
 
-
 # Allowing React to input data
 app = FastAPI(title="BriefAI API")
 app.add_middleware(
