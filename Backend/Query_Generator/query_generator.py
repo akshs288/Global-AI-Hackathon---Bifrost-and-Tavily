@@ -1,11 +1,18 @@
 import os
+import re
 from dotenv import load_dotenv
 from google import genai
+from google.genai import types
 
 load_dotenv()
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", "..", ".env"))
+
+gemini_key = os.getenv("GEMINI_API_KEY")
+if gemini_key:
+    gemini_key = gemini_key.strip('"\' ')
 
 client = genai.Client(
-    api_key=os.getenv("GEMINI_API_KEY")
+    api_key=gemini_key
 )
 
 def generate_query(meeting_details):
@@ -49,7 +56,11 @@ def generate_query(meeting_details):
 
     response = client.models.generate_content(
         model="gemini-3.6-flash",
-        contents=prompt
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            response_mime_type="application/json"
+        )
     )
 
-    return response.text
+    clean_text = re.sub(r"^```(?:json)?\s*|\s*```$", "", response.text.strip())
+    return clean_text

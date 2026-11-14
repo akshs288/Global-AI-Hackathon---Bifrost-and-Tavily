@@ -1,8 +1,14 @@
+import os
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, ValidationError
 from datetime import datetime, timezone
 from testing_engine import TavilyGenerator
+
+load_dotenv()
+# Also search parent directory for .env
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", ".env"))
 
 # from PipeLine import run_pipeline
 
@@ -11,7 +17,8 @@ from testing_engine import TavilyGenerator
 app = FastAPI(title="BriefAI API")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173","http://localhost:5174"],
+    allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -73,6 +80,7 @@ def Home():
 
 #Main Request Model
 @app.post("/API/Brief/Generate", response_model=BriefResponse)
+@app.post("/api/briefs/generate", response_model=BriefResponse)
 def Brief(req: BriefInput):
 #Defining Variables firstly
     company = req.company
@@ -81,11 +89,27 @@ def Brief(req: BriefInput):
     
     try:
         result = TavilyGenerator(company,date,query)
-        return result
+        now = datetime.now(timezone.utc)
+        return BriefResponse(
+            id=f"b{int(now.timestamp() * 1000)}",
+            company=company.strip(),
+            date=date,
+            query=query.strip(),
+            generatedAt=now.isoformat(),
+            **result,
+)
 
 	#Basic Expceptional Handeling, Might improve later
     except Exception as e:
+        message = str(e)
+
+        if "RESOURCE_EXHAUSTED" in message or "quota" in message.lower():
+            raise HTTPException(
+                status_code=429,
+                detail="Gemini daily quota is exhausted. Please retry after the quota resets."
+            ) from e
+
         raise HTTPException(
             status_code=500,
-            detail=f"Could not generate brief: {str(e)}"
-        )
+            detail=f"Could not generate brief: {message}"
+        ) from e

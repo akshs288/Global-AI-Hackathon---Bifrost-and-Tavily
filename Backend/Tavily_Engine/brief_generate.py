@@ -1,8 +1,11 @@
 import json
 import os
-
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+
+load_dotenv()
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", "..", ".env"))
 
 
 def generate_brief(
@@ -16,13 +19,19 @@ def generate_brief(
     Generates only the BriefContent part.
     `response_schema` will be the BriefContent class from api.py.
     """
-    cleaned_results = sorted(
-        cleaned_results,
-        key=lambda item: item.get("score") or 0,
-        reverse=True
-    )[:8]
+    if not cleaned_results:
+        cleaned_results = []
+    else:
+        cleaned_results = sorted(
+            cleaned_results,
+            key=lambda item: item.get("score") or 0,
+            reverse=True
+        )[:8]
 
-    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+    gemini_key = os.getenv("GEMINI_API_KEY")
+    if gemini_key:
+        gemini_key = gemini_key.strip('"\' ')
+    client = genai.Client(api_key=gemini_key)
 
     prompt = f"""
 You are a business research analyst creating a concise meeting brief.

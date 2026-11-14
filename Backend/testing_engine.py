@@ -65,5 +65,5 @@ def TavilyGenerator(company,date,query):
     )
 
     print("\n--- GEMINI BRIEF CONTENT ---\n")
-    a = json.dumps(brief_content, indent=2, ensure_ascii=False)
-    return a
+    return brief_content
+    

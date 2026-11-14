@@ -4,7 +4,7 @@ from datetime import date
 
 class Model1(BaseModel):
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
     company_name: str = Field(..., min_length=1)
 

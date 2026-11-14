@@ -34,9 +34,7 @@ def Query(comapany,date,quer):
 
 
     except ValidationError as e:
-        print("Please correct your input:")
-        print(e)
+        raise RuntimeError(f"Input validation failed: {e}") from e
 
     except Exception as e:
-        print("Something went wrong:")
-        print(e)
+        raise RuntimeError(f"Research query failed: {e}") from e
