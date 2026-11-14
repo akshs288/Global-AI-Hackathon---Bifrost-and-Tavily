@@ -33,9 +33,12 @@ def remove_duplicate_content(results):
 def receive_researched_data(whole_query):
     queries = whole_query["research_queries"]
     main_l = []
+
     for i in queries:
-        new_query = i["query"]        # Query is stored
+        new_query = i["query"]
         response = tavily_client.search(new_query)
-        main_l.append(response['results'])
-        print(response['results'])
-        print("\n\n\n")
+
+        # Add each Tavily result dictionary individually
+        main_l.extend(response["results"])
+
+    return main_l

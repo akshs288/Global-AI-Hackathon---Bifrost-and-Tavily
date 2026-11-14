@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, ValidationError
 from datetime import datetime, timezone
 from Query_Generator.main import Query
+from Tavily_Engine.brief_generate import generate_brief
 # from PipeLine import run_pipeline
 
 
@@ -77,39 +78,28 @@ def Brief(req: BriefInput):
     query = req.query
 
     try:
-        result = Query(company, date, query)
-        print(result)
+        cleaned_results = Query(company, date, query)
+
+        brief_content = generate_brief(
+            company=company,
+            date=date,
+            query=query,
+            cleaned_results=cleaned_results,
+            response_schema=BriefContent,
+        )
+
+        return {
+            "id": f"brief_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            "company": company,
+            "date": date,
+            "query": query,
+            "generatedAt": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            **brief_content
+        }
 
     except Exception as e:
         raise HTTPException(
             status_code=500,
-            detail=f"Research failed: {str(e)}"
+            detail=f"Could not generate brief: {str(e)}"
         )
-
-    return {
-        "id": "brief_001",
-        "company": company,
-        "date": date,
-        "query": query,
-        "generatedAt": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-
-        "overview": {
-            "description": "",
-            "industry": "",
-            "hq": "",
-            "products": "",
-            "model": ""
-        },
-
-        "news": [],
-        "executives": [],
-        "talkingPoints": [],
-        "competitors": [],
-        "competitorNote": "",
-        "questions": [],
-        "risks": [],
-        "opportunities": [],
-        "investigate": [],
-        "trends": []
-    }
     

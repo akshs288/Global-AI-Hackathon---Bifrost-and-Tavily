@@ -1,25 +1,65 @@
-def brief_meeting(dataset):        # It will accept the list of dictionary
-    pass
+import json
+import os
 
-    
-
-data = [{'url': 'https://www.crispidea.com/microsoft-ai-strategy-platform-lock-in', 'title': 'Microsoft AI Strategy: Platform Lock-In Over Margins 2026', 'content': 'Microsoft has consistently followed a platform-led growth playbook where scale and ecosystem adoption precede margin optimisation, as seen in Windows, Office, and Azure. AI is now following the same trajectory. Rather than monetising aggressively in the early stages, Microsoft is embedding AI across its core product stack : Azure, Microsoft 365, Dynamics, GitHub, and developer tools positioning AI as a default infrastructure layer rather than a standalone product. This reflects a deliberate [...] AI adoption is increasingly visible at the application layer through Microsoft’s Copilot ecosystem, which has surpassed 100 million monthly active users across Microsoft 365, GitHub, Teams, Edge, Xbox, and enterprise workflows. Features like Agent Mode move AI from a passive assistant to an active task executor, reinforcing the view of AI as infrastructure rather than a feature. Complementing this commercial momentum, Microsoft has committed $4bn over five years toward AI skilling and [...] ## Enterprise AI Monetization Is a LongGame\n\nEnterprise AI monetization differs fundamentally from consumer AI. Enterprises prioritise reliability, compliance, security,and deep system integration over novelty, which slows adoption but increases long-term value. Accordingly, Microsoft is aligning AI pricing with enterprise budgets through bundled offerings such as Microsoft 365 Copilot and Azure AI services, rather than standaloneAI products.', 'score': 0.70354944, 'raw_content': None},
-
+from google import genai
+from google.genai import types
 
 
-{'url': 'https://tradingkey.com/analysis/stocks/us-stocks/250942234-msft-microsoft-earnings-preview-2025-q4-azure-growth-copilot-ai-monetization-tradingkey', 'title': 'What to Expect From Microsoft Q4 FY2025 Earnings: The King of AI Monetization — A $4 Trillion Market Cap Within Reach?', 'content': 'Some analysts now view Microsoft as the only global techgiant to turn AI into an industrial engine, with deep integration across infrastructure (Azure),Software (Copilot, Microsoft 365) and operations (Copilot Studio, GitHub Copilot).\n\nNo other company has achieved this level of vertical integration or revenue diversification in AI. [...] By combining Azure’s cloud scale, Copilot’s user penetration, and continuous infrastructure investment, Microsoft is converting AI adoption into multiple revenue streams — from enterprise subscriptions to usage-based AI pricing.\n\nMorgan Stanley said that Microsoft’s AI innovation cycle is just beginning — the company has ample runway for growth.\n\n## Is Microsoft Overvalued? [...] ## Copilot: More Than Just a Plugin\n\nInits second-largest segment, Productivity & Business Processes, Petrov expects low double-digit growth despite tariff and macro headwinds — driven by rising adoption of Copilot and higher revenue per user.\n\nNadella has said:\n\n> “AI-first copilots in every layer of the tech stack.”', 'score': 0.5523586, 'raw_content': None},
+def generate_brief(
+    company: str,
+    date: str,
+    query: str,
+    cleaned_results: list[dict],
+    response_schema,
+) -> dict:
+    """
+    Generates only the BriefContent part.
+    `response_schema` will be the BriefContent class from api.py.
+    """
 
+    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
+    prompt = f"""
+You are a business research analyst creating a concise meeting brief.
 
-{'url': 'http://www.tradingkey.com/analysis/stocks/us-stocks/250942234-msft-microsoft-earnings-preview-2025-q4-azure-growth-copilot-ai-monetization-tradingkey', 'title': 'What toExpect From Microsoft Q4 FY2025 Earnings: The King of AI Monetization — A $4 Trillion Market Cap Within Reach?', 'content': 'Some analysts now view Microsoft as the only global tech giant to turn AI into an industrial engine, with deep integration across infrastructure (Azure), Software (Copilot, Microsoft 365) and operations (Copilot Studio, GitHub Copilot).\n\nNo other company has achieved this level of vertical integration or revenue diversification in AI. [...] By combining Azure’s cloud scale, Copilot’s user penetration, and continuous infrastructure investment, Microsoft is converting AI adoption into multiple revenue streams — from enterprise subscriptions to usage-based AI pricing.\n\nMorgan Stanley said that Microsoft’s AI innovation cycle is just beginning — the company has ample runway for growth.\n\n## Is Microsoft Overvalued? [...] ## Copilot: More Than Just a Plugin\n\nIn its second-largest segment, Productivity & Business Processes, Petrov expects lowdouble-digit growth despite tariff and macro headwinds — driven by rising adoption of Copilotand higher revenue per user.\n\nNadella has said:\n\n> “AI-first copilots in every layer of the tech stack.”', 'score': 0.5523586, 'raw_content': None}
+Company: {company}
+Meeting date: {date}
+Meeting request: {query}
 
-,
+Cleaned research results:
+{json.dumps(cleaned_results, ensure_ascii=False, indent=2)}
 
-{'url': 'https://www.tradingkey.com/analysis/stocks/us-stocks/250942234-msft-microsoft-earnings-preview-2025-q4-azure-growth-copilot-ai-monetization-tradingkey', 'title': 'What to Expect From Microsoft Q4 FY2025 Earnings: The King of AI Monetization — A $4 TrillionMarket Cap Within Reach?', 'content': 'Some analysts now view Microsoft as the only global tech giant to turn AI into an industrial engine, with deep integration across infrastructure (Azure), Software (Copilot, Microsoft 365) and operations (Copilot Studio, GitHubCopilot).\n\nNo other company has achieved this level of vertical integration or revenue diversification in AI. [...] By combining Azure’s cloud scale, Copilot’s user penetration, and continuous infrastructure investment, Microsoft is converting AI adoption into multiple revenue streams — from enterprise subscriptions to usage-based AI pricing.\n\nMorgan Stanleysaid that Microsoft’s AI innovation cycle is just beginning — the company has ample runway for growth.\n\n## Is Microsoft Overvalued? [...] ## Copilot: More Than Justa Plugin\n\nIn its second-largest segment, Productivity & Business Processes, Petrov expects low double-digit growth despite tariff and macro headwinds — driven by rising adoption of Copilot and higher revenue per user.\n\nNadella has said:\n\n> “AI-first copilots in every layer of the tech stack.”', 'score': 0.5523586, 'raw_content': None}
-,
+Use only the research results provided above.
 
+Rules:
+- Do not invent facts.
+- Return only valid JSON matching the supplied schema.
+- Do not return Markdown, explanations, code fences, citations, or extra keys.
+- If data is unavailable, use "" for a string and [] for a list.
+- Keep every point concise so the final brief can fit on one page.
 
-{'url': 'https://cryptorank.io/news/feed/e0652-microsoft-copilot-windows-rollback', 'title': 'Microsoft Copilot Retreats: Strategic Rollback Addresses Windows 11 AI Bloat Concerns', 'content': 'Q2: Why is Microsoft reducing Copilot’s presence in Windows?  \nThe company states it is responding to userfeedback and adopting a more intentional strategy. The goal is to integrate AI only where it provides genuine, meaningful utility, moving away from a ‘everywhere’ approach that can feel like bloat. [...] Q3: Does this mean Microsoft isgiving up on AI in Windows?  \nNo, this is a refinement, not a retreat. Microsoft emphasizes it is focusing on high-value AI experiences. Copilot will remain a core part of Windows but is being integrated more selectively based on user needs and feedback. [...] WatchlistPortfolio | Primary Driver |\n ---  --- |\n| Copilot App Integrations | Widespread entry points across OS apps | Rolled back from Photos, Widgets, Notepad, Snipping Tool | User feedback on clutter and relevance |\n| System-Level Copilot | Deep integration in Settings & File Explorer | Plans reportedly shelved | Strategic refocus on core utility |\n| Windows Recall | Launch with Copilot+ PCs in 2024 | Delayed to 2025; launched with ongoing security reviews | Privacy and security concerns |', 'score': 0.50053024, 'raw_content': None}]
+Field guidance:
+- overview: factual description, industry, headquarters, products, and business model.
+- news: a list of relevant recent news objects containing date, title, and summary.
+- executives: a list of executive objects containing name, role, and description.
+- talkingPoints: practical discussion points based on the meeting request.
+- competitors: competitor objects containing name, positioning, and advantage.
+- competitorNote: a short overall comparison note.
+- questions: useful questions to ask in this meeting.
+- risks: important company or partnership risks.
+- opportunities: possible partnership or business opportunities.
+- investigate: facts that should be verified before the meeting.
+- trends: relevant industry trends.
+"""
 
-brief_meeting(data)
-    
+    response = client.models.generate_content(
+        model="gemini-3.6-flash",
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            temperature=0.2,
+            response_mime_type="application/json",
+            response_schema=response_schema,
+        ),
+    )
+
+    return response.parsed.model_dump()

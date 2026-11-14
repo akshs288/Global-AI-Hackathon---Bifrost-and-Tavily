@@ -6,6 +6,7 @@ from Query_Generator.language_to_json import generate_json_data
 from Tavily_Engine.integrate_tavily_engine import receive_researched_data
 from Tavily_Engine.integrate_tavily_engine import remove_duplicate_content
 
+
 def Query(comapany,date,quer):
     final_query = f"Company name = {comapany}, Meeting Date = {date}, Query = {quer}"
 
@@ -28,7 +29,7 @@ def Query(comapany,date,quer):
         tavily_researched_data = receive_researched_data(gemini_query)
         raw_data_meeting = remove_duplicate_content(tavily_researched_data)         # This will return list of Dictionary
 
-        # meeting_brief = 
+        return raw_data_meeting
 
 
     except ValidationError as e:
