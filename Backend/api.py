@@ -82,27 +82,41 @@ def Brief(req:BriefInput):
     except Exception as e:
         print(e)
 
-    return {
-        "id": "brief_001",
+    return {"id": "brief_001",
         "company": company,
         "date": date,
         "query": query,
         "generatedAt": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "overview": {
-            "description": "Electric vehicle and clean energy company.",
-            "industry": "Automotive",
-            "hq": "Austin, Texas",
-            "products": "Electric vehicles and batteries",
-            "model": "Direct-to-consumer"
-        },
+                    "description": "Electric vehicle and clean energy company.",
+                    "industry": "Automotive",
+                    "hq": "Austin, Texas",
+                    "products": "Electric vehicles and batteries",
+                    "model": "Direct-to-consumer"},
+	
+	    "meeting_context": {
+    	    "agenda": "",
+    	    "participants": [],
+    	    "meetingType": "",
+    	    "objective": "",
+    	    "expectedOutcome": ""},
+
         "news": [],
-        "executives": [],
-        "talkingPoints": [],
-        "competitors": [],
-        "competitorNote": "",
-        "questions": [],
-        "risks": [],
-        "opportunities": [],
-        "investigate": [],
-        "trends": []
-        }
+        "executives": {
+    	"name": "",
+    	"designation": "",
+    	"responsibilities": "",
+    	"recentDevelopments": [],
+    	"source": ""},
+        
+	    "talkingPoints": [],
+            "competitors": [],
+            "competitorNote": "",
+            "questions": [],
+            "risks": [],
+            "opportunities": [],
+            "investigate": [],
+            "trends": []
+    
+    }
+    
