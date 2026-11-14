@@ -71,52 +71,45 @@ def Home():
     return {"status": "API is Running"}
 
 @app.post("/API/Brief/Generate", response_model=BriefResponse)
-def Brief(req:BriefInput):
+def Brief(req: BriefInput):
     company = req.company
     date = req.date
     query = req.query
+
     try:
-        result = Query(company,date,query)            # Working in CLI
+        result = Query(company, date, query)
         print(result)
 
     except Exception as e:
-        print(e)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Research failed: {str(e)}"
+        )
 
-    return {"id": "brief_001",
+    return {
+        "id": "brief_001",
         "company": company,
         "date": date,
         "query": query,
         "generatedAt": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+
         "overview": {
-                    "description": "Electric vehicle and clean energy company.",
-                    "industry": "Automotive",
-                    "hq": "Austin, Texas",
-                    "products": "Electric vehicles and batteries",
-                    "model": "Direct-to-consumer"},
-	
-	    "meeting_context": {
-    	    "agenda": "",
-    	    "participants": [],
-    	    "meetingType": "",
-    	    "objective": "",
-    	    "expectedOutcome": ""},
+            "description": "",
+            "industry": "",
+            "hq": "",
+            "products": "",
+            "model": ""
+        },
 
         "news": [],
-        "executives": {
-    	"name": "",
-    	"designation": "",
-    	"responsibilities": "",
-    	"recentDevelopments": [],
-    	"source": ""},
-        
-	    "talkingPoints": [],
-            "competitors": [],
-            "competitorNote": "",
-            "questions": [],
-            "risks": [],
-            "opportunities": [],
-            "investigate": [],
-            "trends": []
-    
+        "executives": [],
+        "talkingPoints": [],
+        "competitors": [],
+        "competitorNote": "",
+        "questions": [],
+        "risks": [],
+        "opportunities": [],
+        "investigate": [],
+        "trends": []
     }
     

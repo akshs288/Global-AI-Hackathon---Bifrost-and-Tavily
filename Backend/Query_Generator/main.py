@@ -18,13 +18,11 @@ def Query(comapany,date,quer):
             data_json = json.loads(query)         # Convert Json into Python Dictionary
             return data_json
 
-
-    data_for_pydantic = generate_json_data(query)    # This function is to generate the query for pydantic model. 
-    # Step 2: Validate user input
-    data_obj = json.loads(data_for_pydantic)
-    meeting = Model1(**data_obj)
-    print("Input successfully validated!")
-
+        data_for_pydantic = generate_json_data(query)    # This function is to generate the query for pydantic model. 
+        # Step 2: Validate user input
+        data_obj = json.loads(data_for_pydantic)
+        meeting = Model1(**data_obj)
+        print("Input successfully validated!")
 
         gemini_query = main_query(meeting=meeting)
         tavily_researched_data = receive_researched_data(gemini_query)
