@@ -300,6 +300,7 @@ You can test the backend directly using the FastAPI Swagger documentation.
 - Keep your API keys private. Never commit `.env` files or expose API credentials in your public repository.
 - Ensure both backend and frontend servers are running simultaneously to use the application.
 
+---
 
-
+Built for the Global AI Hackathon using React, FastAPI, Gemini, and Tavily.
 
