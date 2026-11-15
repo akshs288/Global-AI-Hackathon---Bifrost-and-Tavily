@@ -51,7 +51,7 @@ export default function Settings() {
             <span className="avatar lg">RS</span>
             <div>
               <b>Rahul Sharma</b>
-              <p className="muted">thanosharma1234@gmail.com · Demo account</p>
+              <p className="muted">thanosharma1234@gmail.com · Admin account</p>
             </div>
           </div>
         </div>
@@ -111,8 +111,7 @@ export default function Settings() {
             About
           </h3>
           <p className="muted">
-            BriefAI · Frontend demo. Briefs are generated from sample data
-            in your browser and are not verified research.
+            BriefAI · is an AI-powered meeting preparation tool that generates comprehensive business briefs through automated company research and analysis..
           </p>
         </div>
       </div>
