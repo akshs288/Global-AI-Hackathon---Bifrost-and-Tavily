@@ -8,6 +8,64 @@ Aven AI takes a company or individual's name and meeting context as input, resea
 
 **Our vision:** Transform time-consuming manual research into an intelligent, automated meeting-preparation experience through AI-powered research and contextual insights.
 
+## Project Structure
+
+```text
+Global-AI-Hackathon---Bifrost-and-/
+│
+├── Backend/
+│   ├── api.py                         # Main FastAPI server and API routes
+│   ├── testing_engine.py              # Main research and brief-generation pipeline
+│   ├── requirements.txt               # Python dependencies
+│   │
+│   ├── Data_Validation/
+│   │   ├── input_schema.py            # Pydantic models for meeting-input validation
+│   │   └── input_validation.py        # Validation test/example
+│   │
+│   ├── Query_Generator/
+│   │   ├── main.py                    # Coordinates validation and research-query generation
+│   │   ├── language_to_json.py        # Gemini: user input → structured meeting data
+│   │   └── query_generator.py         # Gemini: meeting data → research queries
+│   │
+│   └── Tavily_Engine/
+│       ├── integrate_tavily_engine.py # Tavily research, competitor query, deduplication
+│       └── brief_generate.py          # Gemini: sources → structured meeting brief
+│
+├── Front-End/
+│   ├── package.json                   # Frontend dependencies and scripts
+│   ├── vite.config.ts                 # Vite configuration
+│   │
+│   └── src/
+│       ├── main.tsx                   # React application entry point
+│       ├── App.tsx                    # Routes and app layout setup
+│       ├── types.ts                   # Shared TypeScript data interfaces
+│       ├── constants.ts               # UI section names, loading steps, example prompts
+│       ├── styles.css                 # Application styling
+│       │
+│       ├── components/
+│       │   ├── Layout.tsx             # Sidebar and top navigation
+│       │   └── BriefResult.tsx        # Brief sections, evidence badges, source links
+│       │
+│       ├── pages/
+│       │   ├── Home.tsx               # Meeting form and generated brief screen
+│       │   ├── Briefs.tsx             # Previously saved briefs
+│       │   └── Settings.tsx           # Display and saved-data settings
+│       │
+│       ├── context/
+│       │   └── AppContext.tsx         # Global brief, settings, toast, and dialog state
+│       │
+│       ├── services/
+│       │   └── briefService.ts        # Frontend API request to FastAPI backend
+│       │
+│       └── utils/
+│           ├── storage.ts             # Browser localStorage helpers
+│           └── pdf.ts                 # PDF meeting-brief export
+│
+├── .env                               # Gemini and Tavily API keys (not committed)
+├── .gitignore
+└── README.md
+```
+
 ## ⚙️ Technical Approach
 
 Aven AI follows a multi-stage AI research pipeline that transforms user-provided meeting context into a structured, evidence-backed briefing.
