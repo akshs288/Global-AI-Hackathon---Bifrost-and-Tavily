@@ -30,9 +30,10 @@ def generate_query(meeting_details):
     2. Identify the important research areas.
     3. Consider the participants and their roles.
     4. Include relevant recent developments.
-    5. Make the query specific and comprehensive.
-    6. Do not invent missing meeting details.
-    7. Return only the refined research query (And please return me query in json format like example - {{ 
+    5. Include a targeted query for the company's competitors, alternatives, and competitive landscape.
+    6. Make the query specific and comprehensive.
+    7. Do not invent missing meeting details.
+    8. Return only the refined research query (And please return me query in json format like example - {{
     "company": "Microsoft",
     "research_queries": [
         {{
