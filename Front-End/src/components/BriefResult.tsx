@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Download, TriangleAlert } from "lucide-react";
 import { SECTIONS } from "../constants";
 import { useApp } from "../context/AppContext";
-import type { Brief } from "../types";
+import type { Brief, Source } from "../types";
 import { exportBriefPdf } from "../utils/pdf";
 import { fmtDate } from "../utils/storage";
 
@@ -13,6 +13,25 @@ const UL = ({ items }: { items: string[] }) => (
     ))}
   </ul>
 );
+
+function EvidenceLinks({ sourceIds, sources }: { sourceIds: string[]; sources: Source[] }) {
+  const evidence = sources.filter((source) => sourceIds.includes(source.id));
+
+  if (!evidence.length) return null;
+
+  return (
+    <small>
+      Sources: {evidence.map((source, index) => (
+        <span key={source.id}>
+          {index > 0 && ", "}
+          <a href={source.url} target="_blank" rel="noreferrer">
+            {source.title || `Source ${index + 1}`}
+          </a>
+        </span>
+      ))}
+    </small>
+  );
+}
 
 function bodies(b: Brief): ReactNode[] {
   const o = b.overview;
@@ -35,6 +54,7 @@ function bodies(b: Brief): ReactNode[] {
           <small>{n.date} · sample</small>
           <b>{n.title}</b>
           <p>{n.summary}</p>
+          <EvidenceLinks sourceIds={n.evidenceIds} sources={b.sources ?? []} />
         </div>
       ))}
     </div>,
