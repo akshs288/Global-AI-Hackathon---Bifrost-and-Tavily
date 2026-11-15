@@ -3,6 +3,7 @@ export interface Overview { description: string; industry: string; hq: string; p
 export interface NewsItem { date: string; title: string; summary: string }
 export interface Executive { name: string; role: string; description: string }
 export interface Competitor { name: string; positioning: string; advantage: string }
+
 export interface Brief extends BriefInput {
   id: string;
   generatedAt: string;
@@ -18,6 +19,7 @@ export interface Brief extends BriefInput {
   investigate: string[];
   trends: string[];
 }
+
 export interface Settings { animations: boolean; compactSidebar: boolean }
 export interface ToastItem { id: number; message: string }
 export interface DialogState { title: string; message: string; okLabel: string; resolve: (v: boolean) => void }

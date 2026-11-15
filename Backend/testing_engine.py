@@ -53,7 +53,7 @@ def TavilyGenerator(company,date,query):
     cleaned_results = Query(company, date, query)
 
     print("\n--- CLEANED TAVILY RESULTS ---\n")
-    print(json.dumps(cleaned_results, indent=2, ensure_ascii=False))
+    # print(json.dumps(cleaned_results, indent=2, ensure_ascii=False))
 
     # Step 2: Test Gemini brief generation
     brief_content = generate_brief(

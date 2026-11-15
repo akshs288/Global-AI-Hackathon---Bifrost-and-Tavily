@@ -17,7 +17,7 @@
 }
 html {
   scroll-behavior: smooth;
-  zoom:85%;
+  zoom:80%;
 }
 body {
   font-family: var(--font);
@@ -27,6 +27,9 @@ body {
   overflow-x: hidden;
   line-height: 1.55;
   font-size: 15px;
+}
+body::-webkit-scrollbar{
+  display: none;
 }
 .bg {
   position: fixed;
