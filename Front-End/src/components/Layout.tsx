@@ -43,7 +43,7 @@ export default function Layout() {
           <span className="logo">
             <Sparkles />
           </span>
-          <span className="lbl">BriefAI</span>
+          <span className="lbl">AvenAI</span>
         </div>
         <nav>
           {NAV.map(({ to, label, icon: Icon }) => (
