@@ -92,7 +92,7 @@ class BriefResponse(BriefContent):
 
 
 # Testing If API is running or Not
-@app.get("/home")
+@app.get("/")
 def Home():
     return {"status": "API is Running"}
 

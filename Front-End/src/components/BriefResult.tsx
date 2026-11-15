@@ -1,130 +1,152 @@
 import type { ReactNode } from "react";
-import { Download, TriangleAlert } from "lucide-react";
-import { SECTIONS } from "../constants";
+import {
+  Building2, ClipboardList, CircleHelp, Compass, Download, MessagesSquare, Newspaper,
+  Rocket, Scale, Swords, TrendingUp, Users, type LucideIcon,
+} from "lucide-react";
 import { useApp } from "../context/AppContext";
 import type { Brief, EvidenceItem, Source } from "../types";
 import { exportBriefPdf } from "../utils/pdf";
 import { fmtDate } from "../utils/storage";
 
-const UL = ({ items = [] }: { items?: string[] }) => (
-  <ul>
-    {items.map((i, k) => (
-      <li key={k}>{i}</li>
-    ))}
-  </ul>
-);
+const Empty = () => <p className="muted">No information available.</p>;
 
-function EvidenceLinks({ sourceIds, sources }: { sourceIds: string[]; sources: Source[] }) {
-  const evidence = sources.filter((source) => sourceIds.includes(source.id));
+const UL = ({ items = [] }: { items?: string[] }) =>
+  items.length ? (
+    <ul>{items.map((text, i) => <li key={i}>{text}</li>)}</ul>
+  ) : (
+    <Empty />
+  );
 
-  if (!evidence.length) return null;
-
+/** Inline "Sources" badge; the list opens on hover, keyboard focus or tap. */
+function Sources({ ids = [], sources }: { ids?: string[]; sources: Source[] }) {
+  const used = sources.filter((s) => ids.includes(s.id));
+  if (!used.length) return null;
   return (
-    <small>
-      Sources: {evidence.map((source, index) => (
-        <span key={source.id}>
-          {index > 0 && ", "}
-          <a href={source.url} target="_blank" rel="noreferrer">
-            {source.title || `Source ${index + 1}`}
+    <span className="sources" tabIndex={0} role="group" aria-label={`${used.length} sources`}>
+      <span className="sources-badge">Sources · {used.length}</span>
+      <span className="sources-list">
+        {used.map((s, i) => (
+          <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" title={s.title || s.url}>
+            {s.title || `Source ${i + 1}`}
           </a>
-        </span>
-      ))}
-    </small>
+        ))}
+      </span>
+    </span>
   );
 }
 
-function EvidenceList({ items, sources }: { items: EvidenceItem[]; sources: Source[] }) {
+function EvidenceList({ items = [], sources }: { items?: EvidenceItem[]; sources: Source[] }) {
+  if (!items.length) return <Empty />;
   return (
     <ul>
-      {items.map((item, index) => (
-        <li key={index}>
+      {items.map((item, i) => (
+        <li key={i}>
           {item.text}
-          <EvidenceLinks sourceIds={item.evidenceIds ?? []} sources={sources} />
+          <Sources ids={item.evidenceIds} sources={sources} />
         </li>
       ))}
     </ul>
   );
 }
 
-function bodies(b: Brief): ReactNode[] {
+interface Section { title: string; icon: LucideIcon; body: ReactNode }
+
+// Title, icon and content live together so they can never drift out of order.
+function buildSections(b: Brief): Section[] {
+  const src = b.sources ?? [];
   const o = b.overview;
   return [
-    <dl className="kv">
-      <dt>Description</dt>
-      <dd>{o.description}</dd>
-      <dt>Industry</dt>
-      <dd>{o.industry}</dd>
-      <dt>Headquarters</dt>
-      <dd>{o.hq}</dd>
-      <dt>Products</dt>
-      <dd>{o.products}</dd>
-      <dt>Business model</dt>
-      <dd>{o.model}</dd>
-      <dt>Sources</dt>
-      <dd><EvidenceLinks sourceIds={o.evidenceIds ?? []} sources={b.sources ?? []} /></dd>
-    </dl>,
-    <EvidenceList items={b.strategicRoadmap ?? []} sources={b.sources ?? []} />,
-    <EvidenceList items={b.expansionBlueprint ?? []} sources={b.sources ?? []} />,
-    <EvidenceList items={b.meetingPreparationSummary ?? []} sources={b.sources ?? []} />,
-    <div className="items">
-      {b.news.map((n, k) => (
-        <div className="item" key={k}>
-          <small>{n.date}</small>
-          <b>{n.title}</b>
-          <p>{n.summary}</p>
-          <EvidenceLinks sourceIds={n.evidenceIds ?? []} sources={b.sources ?? []} />
+    {
+      title: "Company Overview", icon: Building2, body: (
+        <>
+          <dl className="kv">
+            <dt>Description</dt><dd>{o.description}</dd>
+            <dt>Industry</dt><dd>{o.industry}</dd>
+            <dt>Headquarters</dt><dd>{o.hq}</dd>
+            <dt>Products</dt><dd>{o.products}</dd>
+            <dt>Business model</dt><dd>{o.model}</dd>
+          </dl>
+          <Sources ids={o.evidenceIds} sources={src} />
+        </>
+      ),
+    },
+    { title: "Strategic Roadmap", icon: Compass, body: <EvidenceList items={b.strategicRoadmap} sources={src} /> },
+    { title: "Expansion Blueprint", icon: Rocket, body: <EvidenceList items={b.expansionBlueprint} sources={src} /> },
+    { title: "Meeting Preparation Summary", icon: ClipboardList, body: <EvidenceList items={b.meetingPreparationSummary} sources={src} /> },
+    {
+      title: "Recent Company News", icon: Newspaper, body: b.news?.length ? (
+        <div className="items">
+          {b.news.map((n, i) => (
+            <div className="item" key={i}>
+              <small>{n.date}</small>
+              <b>{n.title}</b>
+              <p>{n.summary}</p>
+              <Sources ids={n.evidenceIds} sources={src} />
+            </div>
+          ))}
         </div>
-      ))}
-    </div>,
-    <div className="items">
-      {b.executives.map((e, k) => (
-        <div className="item" key={k}>
-          <b>{e.name}</b>
-          <small>{e.role}</small>
-          <p>{e.description}</p>
-          <EvidenceLinks sourceIds={e.evidenceIds ?? []} sources={b.sources ?? []} />
+      ) : <Empty />,
+    },
+    {
+      title: "Key Executives", icon: Users, body: b.executives?.length ? (
+        <div className="items">
+          {b.executives.map((e, i) => (
+            <div className="item" key={i}>
+              <b>{e.name}</b>
+              <small>{e.role}</small>
+              <p>{e.description}</p>
+              <Sources ids={e.evidenceIds} sources={src} />
+            </div>
+          ))}
         </div>
-      ))}
-    </div>,
-    <UL items={b.talkingPoints} />,
-    <>
-      <div className="items">
-        {b.competitors.map((c, k) => (
-          <div className="item" key={k}>
-            <b>{c.name}</b>
-            <p>{c.positioning}</p>
-            <small>Advantage: {c.advantage}</small>
-            <EvidenceLinks sourceIds={c.evidenceIds ?? []} sources={b.sources ?? []} />
-          </div>
-        ))}
-      </div>
-      <p style={{ marginTop: 10 }}>
-        {b.competitorNote}
-        <EvidenceLinks sourceIds={b.competitorNoteEvidenceIds ?? []} sources={b.sources ?? []} />
-      </p>
-    </>,
-    <UL items={b.questions} />,
-    <>
-      <p>
-        <b>Risks</b>
-      </p>
-      <EvidenceList items={b.risks} sources={b.sources ?? []} />
-      <p style={{ marginTop: 10 }}>
-        <b>Opportunities</b>
-      </p>
-      <EvidenceList items={b.opportunities} sources={b.sources ?? []} />
-      <p style={{ marginTop: 10 }}>
-        <b>Needs further investigation</b>
-      </p>
-      <UL items={b.investigate} />
-    </>,
-    <EvidenceList items={b.trends} sources={b.sources ?? []} />,
+      ) : <Empty />,
+    },
+    { title: "Meeting Talking Points", icon: MessagesSquare, body: <UL items={b.talkingPoints} /> },
+    {
+      title: "Competitor Analysis", icon: Swords, body: (
+        <>
+          {b.competitors?.length ? (
+            <div className="items">
+              {b.competitors.map((c, i) => (
+                <div className="item" key={i}>
+                  <b>{c.name}</b>
+                  <p>{c.positioning}</p>
+                  <small>Advantage: {c.advantage}</small>
+                  <Sources ids={c.evidenceIds} sources={src} />
+                </div>
+              ))}
+            </div>
+          ) : <Empty />}
+          {b.competitorNote && (
+            <p style={{ marginTop: 10 }}>
+              {b.competitorNote}
+              <Sources ids={b.competitorNoteEvidenceIds} sources={src} />
+            </p>
+          )}
+        </>
+      ),
+    },
+    { title: "Potential Questions to Ask", icon: CircleHelp, body: <UL items={b.questions} /> },
+    {
+      title: "Risks and Opportunities", icon: Scale, body: (
+        <>
+          <p><b>Risks</b></p>
+          <EvidenceList items={b.risks} sources={src} />
+          <p style={{ marginTop: 10 }}><b>Opportunities</b></p>
+          <EvidenceList items={b.opportunities} sources={src} />
+          <p style={{ marginTop: 10 }}><b>Needs further investigation</b></p>
+          <UL items={b.investigate} />
+        </>
+      ),
+    },
+    { title: "Industry Trends", icon: TrendingUp, body: <EvidenceList items={b.trends} sources={src} /> },
   ];
 }
 
 export default function BriefResult({ brief }: { brief: Brief }) {
   const { toast } = useApp();
-  const content = bodies(brief);
+  const sections = buildSections(brief);
+
   const onExport = (): void => {
     try {
       exportBriefPdf(brief);
@@ -133,6 +155,7 @@ export default function BriefResult({ brief }: { brief: Brief }) {
       toast("PDF export failed");
     }
   };
+
   return (
     <section className="card glass result" aria-live="polite">
       <div className="r-head">
@@ -142,33 +165,16 @@ export default function BriefResult({ brief }: { brief: Brief }) {
           <span>Export PDF</span>
         </button>
       </div>
-      {/* <div className="demo">
-        <TriangleAlert />
-        <span>
-          Demo content generated from sample data. Not verified live research.
-        </span>
-      </div> */}
       <div className="summary">
-        <div>
-          <span>Company:</span> {brief.company}
-        </div>
-        <div>
-          <span>Meeting date:</span> {fmtDate(brief.date)}
-        </div>
-        <div>
-          <span>Query:</span> {brief.query}
-        </div>
-        <div>
-          <span>Generated:</span> {new Date(brief.generatedAt).toLocaleString()}
-        </div>
+        <div><span>Company:</span> {brief.company}</div>
+        <div><span>Meeting date:</span> {fmtDate(brief.date)}</div>
+        <div><span>Query:</span> {brief.query}</div>
+        <div><span>Generated:</span> {new Date(brief.generatedAt).toLocaleString()}</div>
       </div>
-      {SECTIONS.map(({ title, icon: Icon }, i) => (
+      {sections.map(({ title, icon: Icon, body }, i) => (
         <details key={title} open={i < 2}>
-          <summary>
-            <Icon />
-            {title}
-          </summary>
-          <div className="body">{content[i]}</div>
+          <summary><Icon />{title}</summary>
+          <div className="body">{body}</div>
         </details>
       ))}
     </section>

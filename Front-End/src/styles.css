@@ -17,7 +17,7 @@
 }
 html {
   scroll-behavior: smooth;
-  zoom:80%;
+  zoom: 80%;
 }
 body {
   font-family: var(--font);
@@ -28,7 +28,7 @@ body {
   line-height: 1.55;
   font-size: 15px;
 }
-body::-webkit-scrollbar{
+body::-webkit-scrollbar {
   display: none;
 }
 .bg {
@@ -886,4 +886,95 @@ a.nav-item {
 }
 .loading .spin {
   display: block;
+}
+.sources {
+  position: relative;
+  display: inline-block;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+  outline: 0;
+}
+.body > .sources {
+  margin: 10px 0 0;
+}
+.sources-badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 99px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--lav);
+  background: rgba(124, 127, 242, 0.12);
+  border: 1px solid rgba(124, 127, 242, 0.3);
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.sources:hover .sources-badge,
+.sources:focus .sources-badge,
+.sources:focus-within .sources-badge {
+  background: rgba(124, 127, 242, 0.3);
+  color: #fff;
+}
+.sources:focus-visible .sources-badge {
+  outline: 2px solid var(--lav);
+  outline-offset: 2px;
+}
+
+.sources-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 5;
+  width: min(320px, calc(100vw - 64px));
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(14, 16, 48, 0.97);
+  border: 1px solid var(--line);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.25s,
+    transform 0.25s,
+    visibility 0.25s;
+}
+.sources-list::before {
+  content: "";
+  position: absolute;
+  inset: -8px 0 auto;
+  height: 8px;
+}
+.sources:hover,
+.sources:focus,
+.sources:focus-within {
+  z-index: 30;
+}
+.sources:hover .sources-list,
+.sources:focus .sources-list,
+.sources:focus-within .sources-list {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+}
+
+.sources-list a {
+  display: block;
+  padding: 5px 8px;
+  border-radius: 8px;
+  color: var(--lav);
+  font-size: 0.82rem;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sources-list a:hover,
+.sources-list a:focus-visible {
+  background: rgba(124, 127, 242, 0.18);
+  color: #fff;
 }
