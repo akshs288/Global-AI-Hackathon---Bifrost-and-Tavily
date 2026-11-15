@@ -23,6 +23,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class Source(BaseModel):
+    id: str
+    title: str
+    url: str
+
 # Defined Parameters            JUST MAKE SURE KARNA KI JOH OUTPUT HOGA VOH ISS SCHEMA PE HI BASED HO, KUCH MODIFY HONA H TOH BATA DENA
 class Overview(BaseModel):
     description: str
@@ -30,34 +35,46 @@ class Overview(BaseModel):
     hq: str
     products: str
     model: str
+    evidenceIds: list[str] = Field(default_factory=list)
 
 class NewsItem(BaseModel):
     date: str
     title: str
     summary: str
+    evidenceIds: list[str] = Field(default_factory=list)
 
 class Executive(BaseModel):
     name: str
     role: str
     description: str
+    evidenceIds: list[str] = Field(default_factory=list)
 
 class Competitor(BaseModel):
     name: str
     positioning: str
     advantage: str
+    evidenceIds: list[str] = Field(default_factory=list)
+
+class EvidenceItem(BaseModel):
+    text: str
+    evidenceIds: list[str] = Field(default_factory=list)
 
 class BriefContent(BaseModel):
     overview: Overview
+    strategicRoadmap: list[EvidenceItem]
+    expansionBlueprint: list[EvidenceItem]
+    meetingPreparationSummary: list[EvidenceItem]
     news: list[NewsItem]
     executives: list[Executive]
     talkingPoints: list[str]
     competitors: list[Competitor]
     competitorNote: str
+    competitorNoteEvidenceIds: list[str] = Field(default_factory=list)
     questions: list[str]
-    risks: list[str]
-    opportunities: list[str]
+    risks: list[EvidenceItem]
+    opportunities: list[EvidenceItem]
     investigate: list[str]
-    trends: list[str]
+    trends: list[EvidenceItem]
 
 class BriefInput(BaseModel):
     company: str = Field(min_length=1)
@@ -70,6 +87,7 @@ class BriefResponse(BriefContent):
     date: str
     query: str
     generatedAt: str
+    sources: list[Source]
 # ..
 
 
@@ -96,8 +114,9 @@ def Brief(req: BriefInput):
             date=date,
             query=query.strip(),
             generatedAt=now.isoformat(),
-            **result,
-)
+            **result["brief"],
+            sources=result["sources"],
+        )
 
 	#Basic Expceptional Handeling, Might improve later
     except Exception as e:

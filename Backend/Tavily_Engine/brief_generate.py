@@ -19,15 +19,6 @@ def generate_brief(
     Generates only the BriefContent part.
     `response_schema` will be the BriefContent class from api.py.
     """
-    if not cleaned_results:
-        cleaned_results = []
-    else:
-        cleaned_results = sorted(
-            cleaned_results,
-            key=lambda item: item.get("score") or 0,
-            reverse=True
-        )[:8]
-
     gemini_key = os.getenv("GEMINI_API_KEY")
     if gemini_key:
         gemini_key = gemini_key.strip('"\' ')
@@ -51,19 +42,27 @@ Rules:
 - Do not return Markdown, explanations, code fences, citations, or extra keys.
 - If data is unavailable, use "" for a string and [] for a list.
 - Keep every point concise so the final brief can fit on one page.
+- Each research result has an ID, such as "src_1". Use only IDs supplied in the research results.
+- Include `evidenceIds` for every factual output: overview, strategicRoadmap, expansionBlueprint,
+  meetingPreparationSummary, every news item, executive, competitor, risk, opportunity, and trend.
+  Include `competitorNoteEvidenceIds` for competitorNote.
+- Do not include a factual item if no supplied source supports it.
 
 Field guidance:
-- overview: factual description, industry, headquarters, products, and business model.
-- news: a list of relevant recent news objects containing date, title, and summary.
-- executives: a list of executive objects containing name, role, and description.
+- overview: factual description, industry, headquarters, products, business model, and evidenceIds.
+- strategicRoadmap: objects with text and evidenceIds containing concise, practical next steps for the company's strategic direction.
+- expansionBlueprint: objects with text and evidenceIds containing concise, practical recommendations for market, product, or partnership expansion.
+- meetingPreparationSummary: objects with text and evidenceIds covering the meeting goal, key facts to remember, and desired outcome.
+- news: a list of relevant recent news objects containing date, title, summary, and evidenceIds.
+- executives: a list of executive objects containing name, role, description, and evidenceIds.
 - talkingPoints: practical discussion points based on the meeting request.
-- competitors: competitor objects containing name, positioning, and advantage.
-- competitorNote: a short overall comparison note.
+- competitors: competitor objects containing name, positioning, advantage, and evidenceIds.
+- competitorNote: a short overall comparison note, with competitorNoteEvidenceIds.
 - questions: useful questions to ask in this meeting.
-- risks: important company or partnership risks.
-- opportunities: possible partnership or business opportunities.
+- risks: objects with text and evidenceIds describing important company or partnership risks.
+- opportunities: objects with text and evidenceIds describing possible partnership or business opportunities.
 - investigate: facts that should be verified before the meeting.
-- trends: relevant industry trends.
+- trends: objects with text and evidenceIds describing relevant industry trends.
 """
 
     response = client.models.generate_content(

@@ -20,13 +20,16 @@ export function exportBriefPdf(b: Brief): void {
   const o = b.overview;
   const blocks: string[][] = [
     [`Description: ${o.description}`, `Industry: ${o.industry}`, `Headquarters: ${o.hq}`, `Products: ${o.products}`, `Business model: ${o.model}`],
-    b.news.map(n => `${n.date} (sample) – ${n.title}: ${n.summary}`),
+    b.strategicRoadmap.map(item => item.text),
+    b.expansionBlueprint.map(item => item.text),
+    b.meetingPreparationSummary.map(item => item.text),
+    b.news.map(n => `${n.date} – ${n.title}: ${n.summary}`),
     b.executives.map(e => `${e.name}, ${e.role} – ${e.description}`),
     b.talkingPoints,
     [...b.competitors.map(c => `${c.name}: ${c.positioning}. Advantage: ${c.advantage}`), b.competitorNote],
     b.questions,
-    ['Risks:', ...b.risks, 'Opportunities:', ...b.opportunities, 'Further investigation:', ...b.investigate],
-    b.trends
+    ['Risks:', ...b.risks.map(item => item.text), 'Opportunities:', ...b.opportunities.map(item => item.text), 'Further investigation:', ...b.investigate],
+    b.trends.map(item => item.text)
   ];
   doc.setFillColor(3, 4, 17); doc.rect(0, 0, W, 90, 'F');
   doc.setFont('helvetica', 'bold'); doc.setFontSize(22); doc.setTextColor(255, 255, 255); doc.text(`${b.company} – Meeting Brief`, M, 50);

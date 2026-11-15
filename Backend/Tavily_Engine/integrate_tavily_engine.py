@@ -34,7 +34,17 @@ def remove_duplicate_content(results):
     return cleaned_results
 
 def receive_researched_data(whole_query):
-    queries = whole_query.get("research_queries") or whole_query.get("queries") or []
+    queries = list(whole_query.get("research_queries") or whole_query.get("queries") or [])
+    company = whole_query.get("company")
+    has_competitor_query = any(
+        "competitor" in (item.get("query", "") if isinstance(item, dict) else str(item)).lower()
+        for item in queries
+    )
+    if company and not has_competitor_query:
+        queries.append({
+            "category": "Competitors",
+            "query": f"{company} competitors alternatives competitive landscape",
+        })
     main_l = []
 
     for i in queries:
