@@ -46,6 +46,54 @@ Aven AI follows a multi-stage AI research pipeline that transforms user-provided
 
 **Outcome:** Aven AI converts complex web research into a concise, structured, and verifiable meeting briefing, helping users prepare for important discussions with relevant information and supporting evidence.
 
+## 🛠️ Technology Stack
+
+Aven AI is built using a modern full-stack architecture, combining a React-based frontend, a Python backend, and AI-powered research capabilities.
+
+### Frontend
+
+| Technology | Purpose |
+|---|---|
+| React 18 | Building the interactive user interface |
+| TypeScript | Type-safe development and structured data handling |
+| Vite | Frontend development server and build tooling |
+| React Router | Navigation between Home, Previous Briefs, and Settings |
+| Lucide React | UI icons and visual elements |
+| Custom CSS | Responsive dark glassmorphism UI and styling |
+| Browser localStorage | Locally storing generated briefs and user settings |
+| jsPDF | Exporting meeting briefings as PDF documents |
+
+### Backend
+
+| Technology | Purpose |
+|---|---|
+| Python 3.11 | Core backend development |
+| FastAPI | REST API development and request handling |
+| Uvicorn | Running the FastAPI application |
+| Pydantic | Input validation and structured AI output validation |
+| python-dotenv | Managing environment variables and API configurations |
+
+### AI & Research Layer
+
+| Technology | Purpose |
+|---|---|
+| Google Gemini API | Meeting context extraction, intelligent research query generation, and briefing synthesis |
+| Tavily API | Web research and retrieval of relevant company, news, executive, and competitor information |
+
+### Architecture Overview
+
+**Frontend:** React 18 + TypeScript + Vite
+
+**Backend:** Python 3.11 + FastAPI + Pydantic
+
+**AI Engine:** Google Gemini API
+
+**Research Engine:** Tavily API
+
+**Report Generation:** jsPDF
+
+**Data Storage:** Currently - Browser localStorage, Later - DataBase    
+
 
 
 
