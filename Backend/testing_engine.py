@@ -14,6 +14,7 @@ def TavilyGenerator(company,date,query):
         hq: str
         products: str
         model: str
+        evidenceIds: list[str] = Field(default_factory=list)
 
     class NewsItem(BaseModel):
         date: str
@@ -25,24 +26,34 @@ def TavilyGenerator(company,date,query):
         name: str
         role: str
         description: str
+        evidenceIds: list[str] = Field(default_factory=list)
 
     class Competitor(BaseModel):
         name: str
         positioning: str
         advantage: str
+        evidenceIds: list[str] = Field(default_factory=list)
+
+    class EvidenceItem(BaseModel):
+        text: str
+        evidenceIds: list[str] = Field(default_factory=list)
     
     class BriefContent(BaseModel):
         overview: Overview
+        strategicRoadmap: list[EvidenceItem]
+        expansionBlueprint: list[EvidenceItem]
+        meetingPreparationSummary: list[EvidenceItem]
         news: list[NewsItem]
         executives: list[Executive]
         talkingPoints: list[str]
         competitors: list[Competitor]
         competitorNote: str
+        competitorNoteEvidenceIds: list[str] = Field(default_factory=list)
         questions: list[str]
-        risks: list[str]
-        opportunities: list[str]
+        risks: list[EvidenceItem]
+        opportunities: list[EvidenceItem]
         investigate: list[str]
-        trends: list[str]
+        trends: list[EvidenceItem]
 
 
 
@@ -84,12 +95,29 @@ def TavilyGenerator(company,date,query):
     )
 
     valid_source_ids = {source["id"] for source in sources_for_model}
-    for news_item in brief_content.get("news", []):
-        news_item["evidenceIds"] = [
-            source_id
-            for source_id in news_item.get("evidenceIds", [])
-            if source_id in valid_source_ids
-        ]
+
+    def valid_evidence_ids(source_ids):
+        return [source_id for source_id in source_ids if source_id in valid_source_ids]
+
+    brief_content["overview"]["evidenceIds"] = valid_evidence_ids(
+        brief_content["overview"].get("evidenceIds", [])
+    )
+    brief_content["competitorNoteEvidenceIds"] = valid_evidence_ids(
+        brief_content.get("competitorNoteEvidenceIds", [])
+    )
+    for collection_name in (
+        "strategicRoadmap",
+        "expansionBlueprint",
+        "meetingPreparationSummary",
+        "news",
+        "executives",
+        "competitors",
+        "risks",
+        "opportunities",
+        "trends",
+    ):
+        for item in brief_content.get(collection_name, []):
+            item["evidenceIds"] = valid_evidence_ids(item.get("evidenceIds", []))
 
     print("\n--- GEMINI BRIEF CONTENT ---\n")
     return {

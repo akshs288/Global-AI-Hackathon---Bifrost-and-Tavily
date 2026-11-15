@@ -1,7 +1,10 @@
-import { Building2, CircleHelp, MessagesSquare, Newspaper, Scale, Swords, TrendingUp, Users, type LucideIcon } from 'lucide-react';
+import { Building2, CircleHelp, ClipboardCheck, Map, MessagesSquare, Newspaper, Scale, Swords, TrendingUp, Users, type LucideIcon } from 'lucide-react';
 
 export const SECTIONS: { title: string; icon: LucideIcon }[] = [
   { title: 'Company Overview', icon: Building2 },
+  { title: 'Strategic Roadmap', icon: Map },
+  { title: 'Expansion Blueprint', icon: TrendingUp },
+  { title: 'Meeting Preparation Summary', icon: ClipboardCheck },
   { title: 'Recent Company News', icon: Newspaper },
   { title: 'Key Executives', icon: Users },
   { title: 'Meeting Talking Points', icon: MessagesSquare },

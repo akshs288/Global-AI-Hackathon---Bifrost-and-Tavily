@@ -35,6 +35,7 @@ class Overview(BaseModel):
     hq: str
     products: str
     model: str
+    evidenceIds: list[str] = Field(default_factory=list)
 
 class NewsItem(BaseModel):
     date: str
@@ -46,24 +47,34 @@ class Executive(BaseModel):
     name: str
     role: str
     description: str
+    evidenceIds: list[str] = Field(default_factory=list)
 
 class Competitor(BaseModel):
     name: str
     positioning: str
     advantage: str
+    evidenceIds: list[str] = Field(default_factory=list)
+
+class EvidenceItem(BaseModel):
+    text: str
+    evidenceIds: list[str] = Field(default_factory=list)
 
 class BriefContent(BaseModel):
     overview: Overview
+    strategicRoadmap: list[EvidenceItem]
+    expansionBlueprint: list[EvidenceItem]
+    meetingPreparationSummary: list[EvidenceItem]
     news: list[NewsItem]
     executives: list[Executive]
     talkingPoints: list[str]
     competitors: list[Competitor]
     competitorNote: str
+    competitorNoteEvidenceIds: list[str] = Field(default_factory=list)
     questions: list[str]
-    risks: list[str]
-    opportunities: list[str]
+    risks: list[EvidenceItem]
+    opportunities: list[EvidenceItem]
     investigate: list[str]
-    trends: list[str]
+    trends: list[EvidenceItem]
 
 class BriefInput(BaseModel):
     company: str = Field(min_length=1)
