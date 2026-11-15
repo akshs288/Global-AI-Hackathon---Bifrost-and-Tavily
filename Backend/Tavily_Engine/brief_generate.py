@@ -19,15 +19,6 @@ def generate_brief(
     Generates only the BriefContent part.
     `response_schema` will be the BriefContent class from api.py.
     """
-    if not cleaned_results:
-        cleaned_results = []
-    else:
-        cleaned_results = sorted(
-            cleaned_results,
-            key=lambda item: item.get("score") or 0,
-            reverse=True
-        )[:8]
-
     gemini_key = os.getenv("GEMINI_API_KEY")
     if gemini_key:
         gemini_key = gemini_key.strip('"\' ')
@@ -51,10 +42,14 @@ Rules:
 - Do not return Markdown, explanations, code fences, citations, or extra keys.
 - If data is unavailable, use "" for a string and [] for a list.
 - Keep every point concise so the final brief can fit on one page.
+- Each research result has an ID, such as "src_1".
+- For every news item, include `evidenceIds` with the IDs of the research results
+  that support that item. Use only IDs supplied in the research results.
+- Do not include a news item if no supplied source supports it.
 
 Field guidance:
 - overview: factual description, industry, headquarters, products, and business model.
-- news: a list of relevant recent news objects containing date, title, and summary.
+- news: a list of relevant recent news objects containing date, title, summary, and evidenceIds.
 - executives: a list of executive objects containing name, role, and description.
 - talkingPoints: practical discussion points based on the meeting request.
 - competitors: competitor objects containing name, positioning, and advantage.
