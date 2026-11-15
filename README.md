@@ -82,17 +82,165 @@ Aven AI is built using a modern full-stack architecture, combining a React-based
 
 ### Architecture Overview
 
-**Frontend:** React 18 + TypeScript + Vite
+- **Frontend:** React 18 + TypeScript + Vite
 
-**Backend:** Python 3.11 + FastAPI + Pydantic
+- **Backend:** Python 3.11 + FastAPI + Pydantic
 
-**AI Engine:** Google Gemini API
+- **AI Engine:** Google Gemini API
 
-**Research Engine:** Tavily API
+- **Research Engine:** Tavily API
 
-**Report Generation:** jsPDF
+- **Report Generation:** jsPDF
 
 **Data Storage:** Currently - Browser localStorage, Later - DataBase    
+
+## 🚀 Getting Started
+
+Follow the instructions below to set up and run **Aven AI** locally.
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- Python 3.11 or later
+- Node.js 18 or later
+- npm (comes with Node.js)
+- Google Gemini API Key
+- Tavily API Key
+
+### 1. Clone the Repository
+
+```bash
+git clone <your-repository-url>
+cd Global-AI-Hackathon---Bifrost-and-
+```
+
+### 2. Configure Environment Variables
+
+Create a `.env` file in the project root directory and add your API credentials:
+
+```env
+GEMINI_API_KEY=your_gemini_api_key
+TAVILY_API_KEY=your_tavily_api_key
+```
+
+**Optional: Frontend API Configuration**
+
+If your backend runs on a port or host other than the default `8000`, create a `.env` file inside the `Front-End` directory:
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+### 3. Run the Application
+
+Choose the instructions for your operating system.
+
+#### Windows
+
+Open two separate PowerShell terminals.
+
+**Terminal 1 – Backend Setup**
+
+```powershell
+cd Backend
+
+# Create virtual environment
+python -m venv .venv
+
+# Activate virtual environment
+.\.venv\Scripts\Activate.ps1
+
+# Install dependencies
+python -m pip install -r requirements.txt
+
+# Start FastAPI server
+python -m uvicorn api:app --reload --port 8000
+```
+
+*If PowerShell blocks virtual environment activation, run:*
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
+
+Then activate the environment again.
+
+**Terminal 2 – Frontend Setup**
+
+```powershell
+cd Front-End
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+#### macOS
+
+Open two separate Terminal windows.
+
+**Terminal 1 – Backend Setup**
+
+```bash
+cd Backend
+
+# Create virtual environment
+python3 -m venv .venv
+
+# Activate virtual environment
+source .venv/bin/activate
+
+# Install dependencies
+python3 -m pip install -r requirements.txt
+
+# Start FastAPI server
+python3 -m uvicorn api:app --reload --port 8000
+```
+
+**Terminal 2 – Frontend Setup**
+
+```bash
+cd Front-End
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+### 4. Access Aven AI
+
+Once both servers are running, open the frontend in your browser:
+
+**Frontend Application:** 
+
+http://localhost:5173
+
+**Backend API Documentation:**
+
+http://localhost:8000/docs
+
+### 5. Verify the Backend API
+
+You can test the backend directly using the FastAPI Swagger documentation.
+
+1. Open `http://localhost:8000/docs`.
+2. Locate the `POST /API/Brief/Generate` endpoint.
+3. Click **Try it out**.
+4. Provide the required meeting details.
+5. Execute the request to verify that the API generates a briefing successfully.
+
+### ⚠️ Important Notes
+
+- Each briefing generation involves multiple Gemini API calls and Tavily research requests.
+- Gemini API quota errors may occur depending on your API usage limits. Wait for the quota to reset or use an API project with available quota.
+- Research sources displayed in the UI are retrieved through Tavily and linked to the generated factual sections.
+- Keep your API keys private. Never commit `.env` files or expose API credentials in your public repository.
+- Ensure both backend and frontend servers are running simultaneously to use the application.
 
 
 
