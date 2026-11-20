@@ -111,7 +111,7 @@ export default function Settings() {
             About
           </h3>
           <p className="muted">
-            BriefAI · is an AI-powered meeting preparation tool that generates comprehensive business briefs through automated company research and analysis..
+            AvenAI · is an AI-powered meeting preparation tool that generates comprehensive business briefs through automated company research and analysis..
           </p>
         </div>
       </div>
